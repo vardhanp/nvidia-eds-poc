@@ -17,7 +17,8 @@
 
 :root {
   /* Colors */
-  --color-page-bg: #f7f7f7;
+  /* --color-page-bg: #f7f7f7; */
+  --color-page-bg: yellow;
   --color-surface: #fff;
   --color-surface-alt: #f0f0f0;
   --color-border: #e0e0e0;

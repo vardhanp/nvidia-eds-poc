@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EDS POC — Setup & Deployment Guide</title>
+  <style>
+    :root {
+      --green: #76b900;
+      --green-dark: #5a8f00;
+      --green-light: #8cd400;
+      --page-bg: #f7f7f7;
+      --surface: #fff;
+      --surface-alt: #f0f0f0;
+      --border: #e0e0e0;
+      --border-strong: #ccc;
+      --text: #1a1a1a;
+      --text-secondary: #444;
+      --muted: #777;
+      --code-bg: #f4f4f4;
+      --sidebar-w: 260px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--page-bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    /* ── TOP BAR ── */
+    .topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 56px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+      z-index: 200;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    .topbar-logo {
+      background: var(--green);
+      color: #fff;
+      font-weight: 900;
+      font-size: 13px;
+      letter-spacing: 2px;
+      padding: 5px 12px;
+      border-radius: 4px;
+      text-decoration: none;
+    }
+
+    .topbar-title {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .topbar-title span { color: var(--text); font-weight: 600; }
+
+    .topbar-badge {
+      margin-left: auto;
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      color: var(--green-dark);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+    }
+
+    /* ── LAYOUT ── */
+    .layout {
+      display: flex;
+      padding-top: 56px;
+      min-height: 100vh;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      position: fixed;
+      top: 56px;
+      bottom: 0;
+      left: 0;
+      overflow-y: auto;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 24px 0;
+    }
+
+    .sidebar-section {
+      padding: 0 16px 8px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 20px;
+    }
+
+    .sidebar-section:first-child { margin-top: 0; }
+
+    .sidebar nav a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 16px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
+    }
+
+    .sidebar nav a:hover {
+      color: var(--text);
+      background: var(--page-bg);
+    }
+
+    .sidebar nav a.active {
+      color: var(--green-dark);
+      border-left-color: var(--green);
+      background: rgba(118,185,0,0.08);
+    }
+
+    .sidebar nav a .icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      opacity: 0.5;
+    }
+
+    /* ── MAIN CONTENT ── */
+    .content {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      padding: 48px 64px 80px;
+      max-width: 960px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .page-header h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .page-header h1 span { color: var(--green-dark); }
+
+    .page-header p {
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 600px;
+    }
+
+    .page-header .meta {
+      margin-top: 16px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .tag.green { border-color: rgba(118,185,0,0.5); color: var(--green-dark); background: rgba(118,185,0,0.08); }
+
+    /* ── SECTIONS ── */
+    .section {
+      margin-bottom: 56px;
+      scroll-margin-top: 80px;
+    }
+
+    .section h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section h2 .section-icon {
+      width: 28px;
+      height: 28px;
+      background: rgba(118,185,0,0.12);
+      border: 1px solid rgba(118,185,0,0.35);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--green-dark);
+      flex-shrink: 0;
+    }
+
+    .section h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin: 28px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      background: var(--green);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    p { margin-bottom: 14px; color: var(--text-secondary); }
+
+    ul, ol {
+      padding-left: 20px;
+      margin-bottom: 14px;
+    }
+
+    li { margin-bottom: 6px; color: var(--text-secondary); }
+
+    a { color: var(--green-dark); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 16px 0;
+      position: relative;
+    }
+
+    pre code {
+      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+      font-size: 13px;
+      color: #24292e;
+      background: none;
+      padding: 0;
+      line-height: 1.7;
+    }
+
+    code {
+      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+      font-size: 13px;
+      background: var(--surface-alt);
+      color: var(--green-dark);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    .cmd { color: #005cc5; }
+    .cmt { color: #6a737d; font-style: italic; }
+    .str { color: #032f62; }
+    .kw  { color: var(--green-dark); font-weight: 600; }
+
+    /* ── COPY BUTTON ── */
+    .code-wrap { position: relative; }
+
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      color: var(--muted);
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+      font-family: inherit;
+    }
+
+    .copy-btn:hover { color: var(--text); border-color: #999; }
+    .copy-btn.copied { color: var(--green-dark); border-color: var(--green); }
+
+    /* ── CALLOUT BOXES ── */
+    .callout {
+      border-left: 3px solid;
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+
+    .callout.info { border-color: #0969da; background: rgba(9,105,218,0.05); }
+    .callout.warn { border-color: #d29922; background: rgba(210,153,34,0.06); }
+    .callout.tip  { border-color: var(--green); background: rgba(118,185,0,0.06); }
+
+    .callout strong { display: block; margin-bottom: 4px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .callout.info strong { color: #0969da; }
+    .callout.warn strong { color: #d29922; }
+    .callout.tip  strong { color: var(--green-dark); }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 16px 0; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      background: var(--surface);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    th {
+      background: var(--surface-alt);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 10px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      color: var(--text-secondary);
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--page-bg); }
+
+    /* ── METHOD CARDS ── */
+    .method-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 20px 0 32px;
+    }
+
+    .method-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      transition: border-color 0.2s;
+      cursor: default;
+    }
+
+    .method-card:hover { border-color: var(--border-strong); }
+    .method-card.recommended { border-color: rgba(118,185,0,0.5); }
+
+    .method-card .method-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .method-card .rec-badge {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: var(--green);
+      color: #fff;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+
+    .method-card p {
+      font-size: 12px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* ── FLOW DIAGRAM ── */
+    .flow {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px 28px;
+      margin: 16px 0;
+      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+      font-size: 13px;
+      color: #24292e;
+      line-height: 2;
+      overflow-x: auto;
+    }
+
+    .flow .fl-green { color: var(--green-dark); font-weight: 700; }
+    .flow .fl-blue  { color: #005cc5; }
+    .flow .fl-gray  { color: #6a737d; }
+    .flow .fl-yellow{ color: #b08800; }
+
+    /* ── FILE TREE ── */
+    .filetree {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 24px;
+      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+      font-size: 13px;
+      line-height: 2;
+      overflow-x: auto;
+    }
+
+    .filetree .ft-dir   { color: #005cc5; }
+    .filetree .ft-file  { color: #24292e; }
+    .filetree .ft-arrow { color: var(--green-dark); }
+    .filetree .ft-cmt   { color: #6a737d; }
+    .filetree .ft-tree  { color: #bbb; }
+
+    /* ── TROUBLE ITEMS ── */
+    .trouble-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .trouble-q {
+      padding: 14px 18px;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface-alt);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .trouble-q::before {
+      content: '?';
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      background: rgba(210,153,34,0.12);
+      border: 1px solid rgba(210,153,34,0.4);
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 800;
+      color: #d29922;
+      flex-shrink: 0;
+    }
+
+    .trouble-a {
+      padding: 14px 18px 16px 48px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .trouble-a ul { margin: 8px 0 0; }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0;
+    }
+
+    /* ── REFS ── */
+    .ref-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .ref-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      text-decoration: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .ref-card:hover { border-color: var(--green); box-shadow: 0 2px 8px rgba(118,185,0,0.12); text-decoration: none; }
+
+    .ref-card-icon {
+      width: 32px;
+      height: 32px;
+      background: rgba(118,185,0,0.1);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--green-dark);
+      flex-shrink: 0;
+    }
+
+    .ref-card-text .ref-title { font-size: 13px; font-weight: 600; color: var(--text); }
+    .ref-card-text .ref-url   { font-size: 11px; color: var(--muted); }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #aaa; }
+
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .content { margin-left: 0; padding: 32px 20px 60px; }
+      .method-grid { grid-template-columns: 1fr; }
+      .ref-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <a class="topbar-logo" href="index.html">NVIDIA</a>
+  <span class="topbar-title">EDS POC &rsaquo; <span>Setup &amp; Deployment Guide</span></span>
+  <span class="topbar-badge">v1.0.0</span>
+</header>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">Getting Started</div>
+    <nav>
+      <a href="#overview" class="active">
+        <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 1a6 6 0 1 1 0 12A6 6 0 0 1 8 2zm-.5 3.5v4l3 1.5.5-.87-2.5-1.25V5.5h-1z"/></svg>
+        Overview
+      </a>
+      <a href="#prerequisites">
+        <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm1 11H7V7h2v4zm0-6H7V3h2v2z"/></svg>
+        Prerequisites
+      </a>
+      <a href="#structure">
+        <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3A1.5 1.5 0 0 1 15 10.5v3A1.5 1.5 0 0 1 13.5 15h-3A1.5 1.5 0 0 1 9 13.5v-3z"/></svg>
+        Project Structure
+      </a>
+    </nav>
+
+    <div class="sidebar-section">Running Locally</div>
+    <nav>
+      <a href="#option-a">
+        <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8A.5.5 0 0 1 6 7.5zm0 4a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5zM1.5 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 4a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 4a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3z"/></svg>
+        Option A — npm start
+      </a>
+      <a href="#option-b">
+        <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M15.5 5.5a.5.5 0 0 1-.5.5H11V8h3.5a.5.5 0 0 1 0 1H11v2h4a.5.5 0 0 1 0 1H1a.5.5 0 0 1 0-1h1V4H1a.5.5 0 0 1 0-1h13a.5.5 0 0 1 0 1h-3v7h-1V4H4v7H3V4H2v7h7V8H7.5a.5.5 0 0 1 0-1H9V6h-.5a.5.5 0 0 1 0-1H15a.5.5 0 0 1 .5.5z"/></svg>
+        Option B — AEM CLI
+      </a>
+      <a href="#option-c">
+        <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M1 6a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6z"/></svg>
+        Option C — Python
+      </a>
+    </nav>
+
+    <div class="sidebar-section">Deployment</div>
+    <nav>
+      <a href="#deploy">
+        <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm4.95 5.66L7.04 11.6a.75.75 0 0 1-1.06 0L3.05 8.67a.75.75 0 1 1 1.06-1.06l2.4 2.4 5.37-5.4a.75.75 0 1 1 1.07 1.05z"/></svg>
+        Deploy to EDS
+      </a>
+      <a href="#how-eds-works">
+        <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M5 3.5h6A1.5 1.5 0 0 1 12.5 5v1H14a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h1.5V5A1.5 1.5 0 0 1 5 3.5z"/></svg>
+        How EDS Works
+      </a>
+    </nav>
+
+    <div class="sidebar-section">Help</div>
+    <nav>
+      <a href="#troubleshooting">
+        <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 7.588zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>
+        Troubleshooting
+      </a>
+      <a href="#references">
+        <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h11A1.5 1.5 0 0 1 15 2.5v11a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 13.5v-11zm1.5-.5a.5.5 0 0 0-.5.5v11a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5v-11a.5.5 0 0 0-.5-.5h-11zM4 6.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0-6a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5z"/></svg>
+        References
+      </a>
+    </nav>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="content">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header" id="overview">
+      <h1>NVIDIA Contact Page<br><span>EDS POC</span> — Setup &amp; Deployment</h1>
+      <p>A Proof of Concept built with <strong>Adobe Edge Delivery Services</strong> patterns, replicating the structure of <a href="https://www.nvidia.com/en-us/contact/" target="_blank">nvidia.com/en-us/contact</a>.</p>
+      <div class="meta">
+        <span class="tag green">&#9679; EDS / AEM</span>
+        <span class="tag">Node 18+</span>
+        <span class="tag">ES Modules</span>
+        <span class="tag">Static / Serverless</span>
+        <span class="tag">Light Theme</span>
+      </div>
+
+      <!-- Quick commands strip -->
+      <div style="margin-top:28px; background:#f4f4f4; border:1px solid #e0e0e0; border-radius:8px; padding:18px 24px;">
+        <p style="margin:0 0 10px; font-size:12px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#777;">Quick Commands</p>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+          <code style="background:#fff; border:1px solid #ddd; padding:6px 14px; border-radius:4px; font-size:13px;">npm install</code>
+          <span style="color:#bbb; font-size:12px;">install deps (run once)</span>
+          <span style="color:#e0e0e0;">|</span>
+          <code style="background:#fff; border:1px solid #ddd; padding:6px 14px; border-radius:4px; font-size:13px; color:#5a8f00;">npm start</code>
+          <span style="color:#bbb; font-size:12px;">start at localhost:3001</span>
+          <span style="color:#e0e0e0;">|</span>
+          <code style="background:#fff; border:1px solid #ddd; padding:6px 14px; border-radius:4px; font-size:13px; color:#d29922;">npm stop</code>
+          <span style="color:#bbb; font-size:12px;">kill port 3001</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PREREQUISITES -->
+    <section class="section" id="prerequisites">
+      <h2>
+        <span class="section-icon">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 7.588zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>
+        </span>
+        Prerequisites
+      </h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Tool</th><th>Version</th><th>Check command</th><th>Download</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Node.js</td><td>18 or higher</td><td><code>node -v</code></td><td><a href="https://nodejs.org" target="_blank">nodejs.org</a></td></tr>
+            <tr><td>npm</td><td>9 or higher</td><td><code>npm -v</code></td><td>Included with Node</td></tr>
+            <tr><td>Git</td><td>any</td><td><code>git --version</code></td><td><a href="https://git-scm.com" target="_blank">git-scm.com</a></td></tr>
+            <tr><td>Browser</td><td>Chrome recommended</td><td>—</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- PROJECT STRUCTURE -->
+    <section class="section" id="structure">
+      <h2>
+        <span class="section-icon">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3A1.5 1.5 0 0 1 15 10.5v3A1.5 1.5 0 0 1 13.5 15h-3A1.5 1.5 0 0 1 9 13.5v-3z"/></svg>
+        </span>
+        Project Structure
+      </h2>
+      <div class="filetree">
+<span class="ft-dir">edsprojectsetup/</span>
+<span class="ft-tree">├── </span><span class="ft-file">index.html</span>          <span class="ft-cmt">← Main contact page (EDS-authored HTML)</span>
+<span class="ft-tree">├── </span><span class="ft-file">head.html</span>           <span class="ft-cmt">← Extra &lt;head&gt; meta tags</span>
+<span class="ft-tree">├── </span><span class="ft-file">readme.html</span>         <span class="ft-cmt">← This document</span>
+<span class="ft-tree">├── </span><span class="ft-file">README.md</span>
+<span class="ft-tree">├── </span><span class="ft-file">package.json</span>
+<span class="ft-tree">│</span>
+<span class="ft-tree">├── </span><span class="ft-dir">scripts/</span>
+<span class="ft-tree">│   ├── </span><span class="ft-file">aem.js</span>              <span class="ft-cmt">← Core EDS engine (loadBlock, decorateSections…)</span>
+<span class="ft-tree">│   ├── </span><span class="ft-file">scripts.js</span>          <span class="ft-cmt">← Entry point: eager → lazy → delayed</span>
+<span class="ft-tree">│   └── </span><span class="ft-file">delayed.js</span>          <span class="ft-cmt">← Non-critical deferred code</span>
+<span class="ft-tree">│</span>
+<span class="ft-tree">├── </span><span class="ft-dir">styles/</span>
+<span class="ft-tree">│   ├── </span><span class="ft-file">styles.css</span>          <span class="ft-cmt">← NVIDIA dark theme + CSS variables</span>
+<span class="ft-tree">│   └── </span><span class="ft-file">lazy-styles.css</span>     <span class="ft-cmt">← Non-critical styles</span>
+<span class="ft-tree">│</span>
+<span class="ft-tree">├── </span><span class="ft-dir">blocks/</span>
+<span class="ft-tree">│   ├── </span><span class="ft-dir">hero/</span>              <span class="ft-cmt">← Hero section with gradient background</span>
+<span class="ft-tree">│   ├── </span><span class="ft-dir">cards/</span>             <span class="ft-cmt">← 3-column contact option cards</span>
+<span class="ft-tree">│   ├── </span><span class="ft-dir">contact-info/</span>      <span class="ft-cmt">← Tabbed Americas / Asia / Europe offices</span>
+<span class="ft-tree">│   ├── </span><span class="ft-dir">header/</span>            <span class="ft-cmt">← Sticky nav with hamburger menu</span>
+<span class="ft-tree">│   └── </span><span class="ft-dir">footer/</span>            <span class="ft-cmt">← 4-column links + social icons</span>
+<span class="ft-tree">│</span>
+<span class="ft-tree">└── </span><span class="ft-dir">icons/</span>
+<span class="ft-tree">    └── </span><span class="ft-file">icon.svg</span>            <span class="ft-cmt">← Favicon</span>
+      </div>
+
+      <div class="callout tip" style="margin-top:20px">
+        <strong>Block rule</strong>
+        Every block folder must contain exactly two files named after the block: <code>blockname.css</code> and <code>blockname.js</code>. The JS file exports a single <code>default function decorate(block)</code>.
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- OPTION A -->
+    <section class="section" id="option-a">
+      <h2>
+        <span class="section-icon">A</span>
+        Option A &mdash; Run with <code>npm start</code>
+        <span class="tag green" style="font-size:11px; margin-left:8px;">Recommended</span>
+      </h2>
+      <p>The fastest way to run the project with zero extra configuration.</p>
+
+      <h3><span class="step-badge">1</span> Open a terminal in the project folder</h3>
+      <div class="code-wrap">
+        <pre><code><span class="cmd">cd</span> C:\Vardhan-Nvidia\edsprojectsetup</code></pre>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+
+      <h3><span class="step-badge">2</span> Install dependencies</h3>
+      <div class="code-wrap">
+        <pre><code><span class="cmd">npm</span> install</code></pre>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div class="callout info">
+        <strong>What this installs</strong>
+        <code>serve</code> (static file server) and other dev tools from <code>package.json</code>. Only needed once.
+      </div>
+
+      <h3><span class="step-badge">3</span> Start the server</h3>
+      <div class="code-wrap">
+        <pre><code><span class="cmd">npm</span> start</code></pre>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <p>This runs <code>npx serve . --listen 3001</code> and serves the project at <a href="http://localhost:3001" target="_blank">http://localhost:3001</a>.</p>
+
+      <h3><span class="step-badge">4</span> Open in browser</h3>
+      <p>Navigate to <a href="http://localhost:3001" target="_blank"><strong>http://localhost:3001</strong></a> in Chrome or Edge. You should see:</p>
+      <ul>
+        <li>Sticky header with NVIDIA logo and navigation</li>
+        <li>Hero section — <em>"Contact NVIDIA / Get Your Questions Answered."</em></li>
+        <li>Three contact cards (Support, Enterprise Sales, Find a Partner)</li>
+        <li>Regional offices with Americas / Asia / Europe tabs</li>
+        <li>Footer with link columns and social icons</li>
+      </ul>
+
+      <h3>Stop the server</h3>
+      <p>Press <code>Ctrl + C</code> in the terminal, <strong>or</strong> run this from a second terminal window:</p>
+      <div class="code-wrap">
+        <pre><code><span class="cmd">npm</span> stop</code></pre>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div class="callout info">
+        <strong>How npm stop works</strong>
+        Runs <code>npx kill-port 3001</code> — finds and kills whatever process is bound to port 3001. Useful when <code>npm start</code> is running in the background, inside an IDE task runner, or in a terminal you can't reach.
+        <br><br>
+        <strong>Why port 3001?</strong> The AEM CLI (<code>aem up</code>) reserves port 3000 by default. Using 3001 for the static server lets both run side by side without file-serving conflicts.
+      </div>
+    </section>
+
+    <!-- OPTION B -->
+    <section class="section" id="option-b">
+      <h2>
+        <span class="section-icon">B</span>
+        Option B &mdash; Run with the AEM CLI
+      </h2>
+      <p>The official Adobe tool for EDS development. Provides <strong>hot reload</strong> and can proxy content from a live AEM backend.</p>
+
+      <h3><span class="step-badge">1</span> Install the AEM CLI globally</h3>
+      <div class="code-wrap">
+        <pre><code><span class="cmd">npm</span> install -g @adobe/aem-cli</code></pre>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+
+      <h3><span class="step-badge">2</span> Start the dev server</h3>
+      <div class="code-wrap">
+        <pre><code><span class="cmd">cd</span> C:\Vardhan-Nvidia\edsprojectsetup
+<span class="cmd">aem</span> up</code></pre>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <p>Server starts at <a href="http://localhost:3000" target="_blank">http://localhost:3000</a> (AEM CLI default port) with:</p>
+      <ul>
+        <li><strong>Hot reload</strong> — changes to <code>.css</code> or <code>.js</code> files update the browser instantly</li>
+        <li><strong>Content proxy</strong> — fetches page content from the configured AEM origin</li>
+      </ul>
+
+      <h3><span class="step-badge">3</span> Verify hot reload</h3>
+      <ol>
+        <li>Open <code>blocks/hero/hero.css</code> in your editor</li>
+        <li>Change the background gradient value</li>
+
+        <li>Save — the browser updates without a full reload</li>
+      </ol>
+
+      <h3>Stop the server</h3>
+      <p>Press <code>Ctrl + C</code> in the terminal, <strong>or</strong> from a second terminal window:</p>
+      <div class="code-wrap">
+        <pre><code><span class="cmd">npm</span> stop</code></pre>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+    </section>
+
+    <!-- OPTION C -->
+    <section class="section" id="option-c">
+      <h2>
+        <span class="section-icon">C</span>
+        Option C &mdash; Run with Python
+      </h2>
+      <p>No Node.js install required. Python 3's built-in server handles ES module MIME types correctly.</p>
+
+      <div class="code-wrap">
+        <pre><code><span class="cmd">cd</span> C:\Vardhan-Nvidia\edsprojectsetup
+<span class="cmd">python</span> -m http.server 3001</code></pre>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <p>Open <a href="http://localhost:3001" target="_blank"><strong>http://localhost:3001</strong></a>.</p>
+
+      <div class="callout warn">
+        <strong>Important</strong>
+        Never open <code>index.html</code> directly via <code>file://</code> — ES modules require a proper HTTP server with correct MIME types.
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- DEPLOY -->
+    <section class="section" id="deploy">
+      <h2>
+        <span class="section-icon">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm4.95 5.66L7.04 11.6a.75.75 0 0 1-1.06 0L3.05 8.67a.75.75 0 1 1 1.06-1.06l2.4 2.4 5.37-5.4a.75.75 0 1 1 1.07 1.05z"/></svg>
+        </span>
+        Deploying to a Real EDS Project
+      </h2>
+      <p>Connect this POC to a live Adobe Edge Delivery Services project in 5 steps.</p>
+
+      <h3><span class="step-badge">1</span> Create a GitHub repo from the AEM boilerplate</h3>
+      <ol>
+        <li>Go to <a href="https://github.com/adobe/aem-boilerplate" target="_blank">github.com/adobe/aem-boilerplate</a></li>
+        <li>Click <strong>"Use this template"</strong> &rarr; <strong>"Create a new repository"</strong></li>
+        <li>Name it (e.g., <code>nvidia-contact-eds</code>) and set visibility to <strong>Public</strong></li>
+      </ol>
+
+      <h3><span class="step-badge">2</span> Install the AEM Code Sync GitHub App</h3>
+      <ol>
+        <li>Go to <a href="https://github.com/apps/aem-code-sync/installations/new" target="_blank">github.com/apps/aem-code-sync/installations/new</a></li>
+        <li>Select <strong>"Only select repositories"</strong> and choose your new repo</li>
+        <li>Click <strong>Install</strong></li>
+      </ol>
+
+      <h3><span class="step-badge">3</span> Copy block files into the new repo</h3>
+      <div class="code-wrap">
+        <pre><code>blocks/hero/
+blocks/cards/
+blocks/contact-info/
+blocks/header/         <span class="cmt">(replace the boilerplate default)</span>
+blocks/footer/         <span class="cmt">(replace the boilerplate default)</span>
+styles/styles.css      <span class="cmt">(replace the boilerplate default)</span>
+index.html             <span class="cmt">(your contact page)</span></code></pre>
+      </div>
+
+      <h3><span class="step-badge">4</span> Author content in Google Docs / SharePoint</h3>
+      <p>In a real EDS project, page content comes from a document. The table structure maps to HTML blocks:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Document element</th><th>EDS HTML output</th></tr></thead>
+          <tbody>
+            <tr><td>Heading 1</td><td><code>&lt;h1&gt;</code></td></tr>
+            <tr><td>Paragraph</td><td><code>&lt;p&gt;</code></td></tr>
+            <tr><td>Table with "Cards" in first cell</td><td><code>&lt;div class="cards block"&gt;</code></td></tr>
+            <tr><td>Horizontal rule <code>---</code></td><td>New <code>&lt;div class="section"&gt;</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3><span class="step-badge">5</span> Preview and publish</h3>
+      <p>After pushing code to GitHub, your site is immediately live at:</p>
+      <div class="code-wrap">
+        <pre><code>https://<span class="str">&lt;branch&gt;</span>--<span class="str">&lt;repo&gt;</span>--<span class="str">&lt;owner&gt;</span>.aem.page/</code></pre>
+      </div>
+      <p>Install the <strong>AEM Sidekick</strong> Chrome extension to preview and publish individual pages from Google Docs.</p>
+    </section>
+
+    <hr class="divider">
+
+    <!-- HOW EDS WORKS -->
+    <section class="section" id="how-eds-works">
+      <h2>
+        <span class="section-icon">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8A.5.5 0 0 1 6 7.5zm0 4a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5z"/></svg>
+        </span>
+        How EDS Works — Quick Reference
+      </h2>
+
+      <div class="flow">
+<span class="fl-blue">Browser</span> loads <span class="fl-green">index.html</span>
+        │
+        ▼
+<span class="fl-green">scripts.js</span> runs <span class="fl-gray">(type="module")</span>
+        │
+        ├─► <span class="fl-yellow">loadEager()</span>
+        │       └─ decorateMain(main)
+        │               ├─ decorateSections()  <span class="fl-gray">→ adds .section, hides all sections</span>
+        │               └─ decorateBlocks()    <span class="fl-gray">→ adds .block + data-block-name</span>
+        │
+        ├─► <span class="fl-yellow">loadLazy()</span>
+        │       ├─ loadBlocks(main)
+        │       │       └─ for each <span class="fl-green">.block</span>:
+        │       │               ├─ loads /blocks/&lt;name&gt;/<span class="fl-green">&lt;name&gt;.css</span>
+        │       │               ├─ imports /blocks/&lt;name&gt;/<span class="fl-green">&lt;name&gt;.js</span>
+        │       │               ├─ calls <span class="fl-yellow">decorate(block)</span>
+        │       │               └─ reveals the section
+        │       ├─ loads <span class="fl-green">header</span> block
+        │       ├─ loads <span class="fl-green">footer</span> block
+        │       └─ loads lazy-styles.css
+        │
+        └─► <span class="fl-yellow">loadDelayed()</span>
+                └─ analytics, chat widgets, non-critical scripts
+      </div>
+
+      <h3>Block anatomy</h3>
+      <p>Every block is a self-contained folder with exactly two files:</p>
+      <div class="code-wrap">
+        <pre><code>blocks/my-block/
+├── <span class="kw">my-block.css</span>    <span class="cmt">← scoped styles   (.my-block { ... })</span>
+└── <span class="kw">my-block.js</span>     <span class="cmt">← export default function decorate(block) { ... }</span></code></pre>
+      </div>
+      <p>The <code>decorate(block)</code> function receives the raw block DOM element — its children are the table rows from the authored document. The function reshapes the HTML into any structure needed.</p>
+    </section>
+
+    <hr class="divider">
+
+    <!-- TROUBLESHOOTING -->
+    <section class="section" id="troubleshooting">
+      <h2>
+        <span class="section-icon">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 7.588zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>
+        </span>
+        Troubleshooting
+      </h2>
+
+      <div class="trouble-item">
+        <div class="trouble-q">Page is blank / entirely black</div>
+        <div class="trouble-a">
+          The <code>body</code> starts at <code>opacity: 0</code> and only becomes visible after <code>scripts.js</code> adds the <code>appear</code> class. If it stays black:
+          <ul>
+            <li>Open DevTools (<code>F12</code>) &rarr; Console tab and look for errors</li>
+            <li>Make sure you opened the page via <code>http://localhost:3001</code>, <strong>not</strong> by double-clicking <code>index.html</code> (<code>file://</code> URLs block ES modules)</li>
+            <li>Confirm the dev server is still running in your terminal</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="trouble-item">
+        <div class="trouble-q">"Failed to load module" errors in console</div>
+        <div class="trouble-a">
+          The block JS file path must exactly match the block's CSS class name. A <code>&lt;div class="contact-info"&gt;</code> needs:
+          <div class="code-wrap" style="margin-top:10px">
+            <pre><code>blocks/contact-info/contact-info.js
+blocks/contact-info/contact-info.css</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="trouble-item">
+        <div class="trouble-q">Port 3001 is already in use</div>
+        <div class="trouble-a">
+          Use a different port:
+          <div class="code-wrap" style="margin-top:10px">
+            <pre><code><span class="cmd">npx</span> serve . --listen 3002</code></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          Then open <a href="http://localhost:3002" target="_blank">http://localhost:3002</a>.
+          <br><br>
+          Note: port 3000 is reserved by the AEM CLI (<code>aem up</code>). If you need to stop whatever is on 3001, run <code>npx kill-port 3001</code>.
+        </div>
+      </div>
+
+      <div class="trouble-item">
+        <div class="trouble-q">npm command not found</div>
+        <div class="trouble-a">
+          Install Node.js (LTS version) from <a href="https://nodejs.org" target="_blank">nodejs.org</a>. npm is bundled with it. Restart your terminal after installing.
+        </div>
+      </div>
+
+      <div class="trouble-item">
+        <div class="trouble-q">Changes not appearing in the browser</div>
+        <div class="trouble-a">
+          <ul>
+            <li>With <code>npm start</code> / <code>npx serve</code>: hard-refresh with <code>Ctrl + Shift + R</code></li>
+            <li>With <code>aem up</code>: <code>.css</code> and <code>.js</code> changes hot-reload automatically; <code>.html</code> changes need a manual refresh (<code>F5</code>)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- REFERENCES -->
+    <section class="section" id="references">
+      <h2>
+        <span class="section-icon">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h11A1.5 1.5 0 0 1 15 2.5v11a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 13.5v-11zm1.5-.5a.5.5 0 0 0-.5.5v11a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5v-11a.5.5 0 0 0-.5-.5h-11z"/></svg>
+        </span>
+        References
+      </h2>
+      <div class="ref-grid">
+        <a class="ref-card" href="https://www.aem.live/developer/tutorial" target="_blank">
+          <div class="ref-card-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 8A1.5 1.5 0 0 1 10.5 9h3A1.5 1.5 0 0 1 15 10.5v3A1.5 1.5 0 0 1 13.5 15h-3A1.5 1.5 0 0 1 9 13.5v-3z"/></svg>
+          </div>
+          <div class="ref-card-text">
+            <div class="ref-title">EDS Developer Tutorial</div>
+            <div class="ref-url">aem.live/developer/tutorial</div>
+          </div>
+        </a>
+        <a class="ref-card" href="https://github.com/adobe/aem-boilerplate" target="_blank">
+          <div class="ref-card-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+          </div>
+          <div class="ref-card-text">
+            <div class="ref-title">AEM Boilerplate</div>
+            <div class="ref-url">github.com/adobe/aem-boilerplate</div>
+          </div>
+        </a>
+        <a class="ref-card" href="https://www.npmjs.com/package/@adobe/aem-cli" target="_blank">
+          <div class="ref-card-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M5 3.5h6A1.5 1.5 0 0 1 12.5 5v1H14a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h1.5V5A1.5 1.5 0 0 1 5 3.5z"/></svg>
+          </div>
+          <div class="ref-card-text">
+            <div class="ref-title">AEM CLI (npm)</div>
+            <div class="ref-url">npmjs.com/@adobe/aem-cli</div>
+          </div>
+        </a>
+        <a class="ref-card" href="https://www.aem.live/developer/block-collection" target="_blank">
+          <div class="ref-card-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3A1.5 1.5 0 0 1 15 10.5v3A1.5 1.5 0 0 1 13.5 15h-3A1.5 1.5 0 0 1 9 13.5v-3z"/></svg>
+          </div>
+          <div class="ref-card-text">
+            <div class="ref-title">Block Collection</div>
+            <div class="ref-url">aem.live/developer/block-collection</div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  // Active sidebar link tracking
+  const sections = document.querySelectorAll('.section, .page-header');
+  const links = document.querySelectorAll('.sidebar nav a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        links.forEach((link) => {
+          link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach((s) => observer.observe(s));
+
+  // Copy button
+  function copyCode(btn) {
+    const pre = btn.closest('.code-wrap').querySelector('pre');
+    navigator.clipboard.writeText(pre.innerText.trim()).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,97 @@
+[
+  {
+    "id": "cards",
+    "fields": []
+  },
+  {
+    "id": "card",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Icon / Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Icon alt text",
+        "required": true
+      },
+      {
+        "component": "richtext",
+        "name": "text",
+        "label": "Card Content",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "component": "aem-content",
+        "name": "cta",
+        "label": "CTA Link",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "ctaText",
+        "label": "CTA Label",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "columns",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "text",
+        "label": "Column Content",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "contact-info",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "text",
+        "label": "Heading & Subtitle",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "component": "richtext",
+        "name": "locations",
+        "label": "Location Details",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "fragment",
+    "fields": [
+      {
+        "component": "aem-content",
+        "name": "reference",
+        "label": "Reference",
+        "valueType": "string",
+        "required": true
+      }
+    ]
+  },
+  {
+    "id": "hero",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "text",
+        "label": "Text",
+        "valueType": "string",
+        "required": true
+      }
+    ]
+  }
+]

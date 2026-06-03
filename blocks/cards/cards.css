@@ -1,0 +1,123 @@
+.cards-container {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.cards-wrapper {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+}
+
+.cards.block {
+  text-align: center;
+}
+
+.cards > ul {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cards > ul > li {
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--color-border);
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.cards > ul > li:last-child {
+  border-right: none;
+}
+
+.cards-card-image {
+  line-height: 0;
+}
+
+.cards-card-image img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+.cards-card-body {
+  padding: var(--space-xl) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+  width: 100%;
+}
+
+.cards-card-body .card-icon {
+  display: block;
+  height: 64px;
+  width: auto;
+  margin: 0 auto var(--space-md);
+  object-fit: contain;
+  object-position: center;
+}
+
+.cards-card-body h3 {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--space-xs);
+  color: var(--color-text);
+}
+
+.cards-card-body p {
+  color: var(--color-muted);
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+  line-height: 1.65;
+  flex: 1;
+  margin-bottom: var(--space-md);
+}
+
+.cards-card-body p:last-child {
+  margin-bottom: 0;
+  margin-top: auto;
+  padding-top: var(--space-md);
+}
+
+.cards-card-body .button {
+  width: auto;
+  text-align: center;
+}
+
+@media (max-width: 960px) {
+  .cards > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .cards > ul > li:nth-child(2) {
+    border-right: none;
+  }
+
+  .cards > ul > li:nth-child(odd) {
+    border-right: 1px solid var(--color-border);
+  }
+}
+
+@media (max-width: 600px) {
+  .cards > ul {
+    grid-template-columns: 1fr;
+  }
+
+  .cards > ul > li {
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .cards > ul > li:last-child {
+    border-bottom: none;
+  }
+}

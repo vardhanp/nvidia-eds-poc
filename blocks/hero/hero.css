@@ -1,0 +1,36 @@
+.hero-section {
+  background: var(--color-page-bg);
+  padding: var(--space-3xl) var(--space-sm) !important;
+}
+
+.hero-wrapper {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+}
+
+.hero.block {
+  text-align: center;
+  padding-bottom: var(--space-xl);
+}
+
+.hero.block h1 {
+  font-family: var(--font-family-heading);
+  font-size: clamp(2.8rem, 5vw, 4.5rem);
+  font-weight: 700;
+  margin-bottom: var(--space-xs);
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+
+.hero.block p {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.hero.block > div > div {
+  max-width: 800px;
+  margin: 0 auto;
+}

@@ -8,6 +8,6 @@
 #
 mountpoints:
   /:
-    url: "https://author-p202017-e2091244.adobeaemcloud.com/bin/franklin.delivery/vardhanp/nvidia-eds-poc/main"
+    url: "https://author-p163659-e1757619.adobeaemcloud.com/bin/franklin.delivery/vardhanp/nvidia-eds-poc/main"
     type: "markup"
     suffix: ".html"

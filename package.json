@@ -1,8 +1,7 @@
 {
   "name": "nvidia-contact-eds-poc",
   "version": "1.0.0",
-  "description": "NVIDIA Contact page POC built with Adobe Edge Delivery Services (EDS) patterns",
-  "type": "module",
+  "description": "NVIDIA Contact page POC built with Adobe Edge Delivery Services (EDS) patterns",  
   "scripts": {
     "start": "npx serve . --listen 3001",
     "stop": "npx kill-port 3001",

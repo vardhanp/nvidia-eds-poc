@@ -1,11 +1,11 @@
 {
   "name": "nvidia-contact-eds-poc",
   "version": "1.0.0",
-  "description": "NVIDIA Contact page POC built with Adobe Edge Delivery Services (EDS) patterns",  
+  "description": "NVIDIA Contact page POC built with Adobe Edge Delivery Services (EDS) patterns",
   "scripts": {
     "start": "npx serve . --listen 3001",
     "stop": "npx kill-port 3001",
-    "build:json": "node scripts/build-json.js",	   
+    "build:json": "node scripts/build-json.js",
     "lint:js": "eslint . --ext .json,.js,.mjs",
     "lint:css": "stylelint \"blocks/**/*.css\" \"styles/*.css\"",
     "lint": "npm run lint:js && npm run lint:css",
@@ -13,7 +13,7 @@
     "prepare": "husky",
     "test": "playwright test",
     "test:headed": "playwright test --headed",
-    "test:report": "playwright show-report",    
+    "test:report": "playwright show-report",
     "clear-cache": "node hlxAdmin.js cache"
   },
   "repository": {
@@ -21,7 +21,7 @@
     "url": "git+https://github.com/vardhanp/nvidia-eds-poc.git"
   },
   "author": "Nvidia",
-  "license": "Apache License 2.0",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/vardhanp/nvidia-eds-poc/issues"
   },
@@ -33,11 +33,13 @@
     "eslint": "8.57.1",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.32.0",
+    "eslint-plugin-json": "^4.0.1",
+    "eslint-plugin-xwalk": "github:adobe-rnd/eslint-plugin-xwalk",
     "husky": "^9.0.0",
     "kill-port": "^2.0.0",
+    "serve": "^14.0.0",
     "stylelint": "17.12.0",
-    "stylelint-config-standard": "40.0.0",
-    "serve": "^14.0.0"
+    "stylelint-config-standard": "40.0.0"
   },
   "engines": {
     "node": ">=18"
@@ -46,6 +48,5 @@
     "@adobe/aem-cli": "^16.19.11",
     "axios": "^1.16.1",
     "dotenv": "^17.4.2"
-  },
-  "license": "Apache-2.0"
+  }
 }

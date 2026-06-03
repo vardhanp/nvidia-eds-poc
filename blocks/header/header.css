@@ -5,7 +5,7 @@ header {
   z-index: 200;
   background: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 6%);
 }
 
 .nav {
@@ -87,10 +87,6 @@ header {
   font-size: var(--font-size-sm);
   font-weight: 600;
   transition: color var(--transition-base);
-}
-
-.nav-utility a:hover {
-  color: var(--color-nvidia-green-dark);
 }
 
 /* ── Icon action buttons (Search, Region, Sign In) ──────────────── */
@@ -186,7 +182,7 @@ header {
   min-width: 220px;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
   z-index: 160;
   border-radius: 4px;
 }
@@ -224,12 +220,6 @@ header {
   color: #5e5e5e;
 }
 
-/* Green underline on Sign In btn when dropdown is open */
-.nav-action-signin[aria-expanded="true"] .account-icon-anonuser {
-  border-bottom: 2px solid var(--color-nvidia-green);
-  padding-bottom: 2px;
-}
-
 /* ── Country selector dropdown ───────────────────────────────────── */
 .cs-dropdown {
   position: absolute;
@@ -237,7 +227,7 @@ header {
   left: 0;
   width: 100%;
   background: var(--color-surface);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.14);
+  box-shadow: 0 8px 32px rgb(0 0 0 / 14%);
   z-index: 160;
 }
 
@@ -292,7 +282,7 @@ header {
 
 /* ── Font Awesome Sharp Light icon rendering ─────────────────────── */
 .fa-sharp.fa-light {
-  font-family: 'Font Awesome 6 Sharp';
+  font-family: 'Font Awesome 6 Sharp', sans-serif;
   font-weight: 300;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
@@ -344,7 +334,7 @@ header {
   left: 0;
   width: 100%;
   background: var(--color-surface);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.14);
+  box-shadow: 0 8px 32px rgb(0 0 0 / 14%);
   z-index: 160;
 }
 
@@ -365,8 +355,7 @@ header {
   padding: var(--space-md) 0;
   background: #f5f5f5;
   border-right: 1px solid var(--color-border);
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden auto;
 }
 
 .mega-menu-cats li {
@@ -431,13 +420,13 @@ header {
   display: block;
 }
 
-.mega-menu-items li a:hover strong {
-  color: var(--color-nvidia-green-dark);
-}
-
 .mega-menu-items li a strong {
   font-weight: 600;
   transition: color var(--transition-base);
+}
+
+.mega-menu-items li a:hover strong {
+  color: var(--color-nvidia-green-dark);
 }
 
 .mega-menu-arrow {
@@ -456,18 +445,28 @@ header {
   display: none;
   position: fixed;
   inset: 64px 0 0;
-  background: rgba(0,0,0,0.35);
+  background: rgb(0 0 0 / 35%);
   z-index: 150;
 }
 
 .nav-overlay.visible { display: block; }
 
+.nav-utility a:hover {
+  color: var(--color-nvidia-green-dark);
+}
+
+/* Green underline on Sign In btn when dropdown is open */
+.nav-action-signin[aria-expanded="true"] .account-icon-anonuser {
+  border-bottom: 2px solid var(--color-nvidia-green);
+  padding-bottom: 2px;
+}
+
 /* ── Mobile ──────────────────────────────────────────────────────── */
-@media (max-width: 960px) {
+@media (width <= 960px) {
   .mega-menu-items { grid-template-columns: repeat(2, 1fr); }
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .nav-hamburger { display: flex; }
   .nav-utility { display: none; }
   .nav-actions { display: none; }
@@ -482,7 +481,7 @@ header {
     background: var(--color-surface);
     padding: var(--space-sm);
     border-bottom: 1px solid var(--color-border);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 12px rgb(0 0 0 / 8%);
     height: auto;
     z-index: 300;
   }

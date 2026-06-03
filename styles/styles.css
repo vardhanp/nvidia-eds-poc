@@ -14,6 +14,7 @@
     size-adjust: 97.5%;
     src: local('Arial');
 }
+
 :root {
   /* Colors */
   --color-page-bg: #f7f7f7;
@@ -29,10 +30,9 @@
   --color-nvidia-green-hover: #649e00;
 
   /* Typography */
-  --font-family-body: 'NVIDIA Sans', 'NVIDIA Sans Fallback', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-family-heading: 'NVIDIA Sans', 'NVIDIA Sans Fallback', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family-body: 'NVIDIA Sans', 'NVIDIA Sans Fallback', -apple-system, blinkmacsystemfont, sans-serif;
+  --font-family-heading: 'NVIDIA Sans', 'NVIDIA Sans Fallback', -apple-system, blinkmacsystemfont, sans-serif;
   --font-family-condensed: 'NVIDIA Sans', 'NVIDIA Sans Fallback', sans-serif;
-
   --font-size-xs: 0.75rem;      /* 12px */
   --font-size-sm: 0.875rem;     /* 14px */
   --font-size-base: 1rem;       /* 16px */
@@ -114,9 +114,20 @@ h3 {
   letter-spacing: -0.01em;
 }
 
-h4 { font-size: var(--font-size-lg); font-weight: 600; }
-h5 { font-size: var(--font-size-md); font-weight: 600; }
-h6 { font-size: var(--font-size-base); font-weight: 600; }
+h4 {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+}
+
+h5 {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+}
+
+h6 {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+}
 
 p {
   margin: 0 0 var(--space-sm);
@@ -125,14 +136,32 @@ p {
   line-height: 1.65;
 }
 
-a { color: var(--color-nvidia-green-dark); text-decoration: none; }
-a:hover { color: var(--color-nvidia-green-hover); }
+a {
+  color: var(--color-nvidia-green-dark);
+  text-decoration: none;
+}
 
-img, picture { max-width: 100%; display: block; }
+a:hover {
+  color: var(--color-nvidia-green-hover);
+}
+
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
 
 /* Icons */
-.icon { display: inline-block; height: 24px; width: 24px; }
-.icon img { height: 100%; width: 100%; }
+.icon {
+  display: inline-block;
+  height: 24px;
+  width: 24px;
+}
+
+.icon img {
+  height: 100%;
+  width: 100%;
+}
 
 /* Header/footer visibility — hidden until block is fully loaded */
 header .header,
@@ -191,6 +220,7 @@ button.button {
   text-overflow: ellipsis;
   white-space: nowrap;
   transition: background-color var(--transition-base), border-color var(--transition-base), transform var(--transition-base);
+
   /* default = primary */
   background-color: var(--color-nvidia-green);
   border-color: var(--color-nvidia-green);
@@ -282,8 +312,16 @@ hr {
   margin: var(--space-xl) 0;
 }
 
-@media (max-width: 768px) {
-  h1 { font-size: var(--font-size-2xl); }
-  h2 { font-size: var(--font-size-xl); }
-  .section { padding: var(--space-lg) var(--space-sm); }
+@media (width <= 768px) {
+  h1 {
+    font-size: var(--font-size-2xl);
+  }
+
+  h2 {
+    font-size: var(--font-size-xl);
+  }
+
+  .section {
+    padding: var(--space-lg) var(--space-sm);
+  }
 }

@@ -11,7 +11,9 @@
  * Or:   npm run build:json
  */
 
-import { readFileSync, writeFileSync, readdirSync, statSync } from 'fs';
+import {
+  readFileSync, writeFileSync, readdirSync, statSync,
+} from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -34,7 +36,7 @@ function mergeJsonFile(filePath) {
 
 function scanDirectory(dir) {
   try {
-    for (const entry of readdirSync(dir)) {
+    readdirSync(dir).forEach((entry) => {
       const full = join(dir, entry);
       if (statSync(full).isDirectory()) {
         scanDirectory(full);
@@ -42,7 +44,7 @@ function scanDirectory(dir) {
         console.log(`  ✓ ${full.replace(ROOT, '')}`);
         mergeJsonFile(full);
       }
-    }
+    });
   } catch {
     // directory may not exist — skip silently
   }

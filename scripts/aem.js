@@ -17,15 +17,20 @@ export function sampleRUM(checkpoint, data) {
         || window.SAMPLE_PAGEVIEWS_AT_RATE
         || params.get('optel')
         || (currentScript && currentScript.dataset.rate);
-      const rateValue = { on: 1, off: 0, high: 10, low: 1000 }[rate];
+      const rateValue = {
+        on: 1, off: 0, high: 10, low: 1000,
+      }[rate];
       const weight = rateValue !== undefined ? rateValue : 100;
       const id = (window.hlx.rum && window.hlx.rum.id) || crypto.randomUUID().slice(-9);
       const isSelected = (window.hlx.rum && window.hlx.rum.isSelected)
         || (weight > 0 && Math.random() * weight < 1);
       window.hlx.rum = {
-        weight, id, isSelected,
+        weight,
+        id,
+        isSelected,
         firstReadTime: window.performance ? window.performance.timeOrigin : Date.now(),
-        sampleRUM, queue: [],
+        sampleRUM,
+        queue: [],
         collector: (...args) => window.hlx.rum.queue.push(args),
       };
       if (isSelected) {
@@ -65,9 +70,13 @@ export function sampleRUM(checkpoint, data) {
             ? { ua: `${navigator.userAgent} +http://navigator.webdriver` }
             : {};
           const rumData = JSON.stringify({
-            weight, id,
+            weight,
+            id,
             referer: window.location.origin + window.location.pathname,
-            checkpoint: ck, t: time, ...pingData, ...uaExtra,
+            checkpoint: ck,
+            t: time,
+            ...pingData,
+            ...uaExtra,
           });
           const urlParams = window.RUM_PARAMS
             ? new URLSearchParams(window.RUM_PARAMS).toString() || '' : '';

@@ -50,12 +50,12 @@ test.describe('Static Resources', () => {
     '/blocks/contact-info/contact-info.css',
   ];
 
-  for (const file of cssFiles) {
+  cssFiles.forEach((file) => {
     test(`CSS responds 200: ${file}`, async ({ request }) => {
       const resp = await request.get(`${BASE}${file}`);
       expect(resp.status(), `${file} should return 200`).toBe(200);
     });
-  }
+  });
 
   test('scripts/scripts.js responds 200', async ({ request }) => {
     const resp = await request.get(`${BASE}/scripts/scripts.js`);
@@ -100,12 +100,10 @@ test.describe('Page Load & EDS Decoration Pipeline', () => {
   });
 
   test('all 5 blocks are decorated and loaded', async ({ page }) => {
-    const blocks = await page.evaluate(() =>
-      [...document.querySelectorAll('[data-block-name]')].map((b) => ({
-        name: b.dataset.blockName,
-        status: b.dataset.blockStatus,
-      })),
-    );
+    const blocks = await page.evaluate(() => [...document.querySelectorAll('[data-block-name]')].map((b) => ({
+      name: b.dataset.blockName,
+      status: b.dataset.blockStatus,
+    })));
     expect(blocks).toHaveLength(5);
     const expectedBlocks = ['header', 'hero', 'cards', 'contact-info', 'footer'];
     expectedBlocks.forEach((name) => {
@@ -116,9 +114,7 @@ test.describe('Page Load & EDS Decoration Pipeline', () => {
   });
 
   test('all 3 sections are loaded and visible', async ({ page }) => {
-    const statuses = await page.evaluate(() =>
-      [...document.querySelectorAll('.section')].map((s) => s.dataset.sectionStatus),
-    );
+    const statuses = await page.evaluate(() => [...document.querySelectorAll('.section')].map((s) => s.dataset.sectionStatus));
     expect(statuses).toHaveLength(3);
     statuses.forEach((s) => expect(s).toBe('loaded'));
   });
@@ -136,17 +132,15 @@ test.describe('Page Load & EDS Decoration Pipeline', () => {
   });
 
   test('no broken images on page', async ({ page }) => {
-    const brokenImages = await page.evaluate(() =>
-      [...document.querySelectorAll('img')]
-        .filter((img) => !img.complete || img.naturalWidth === 0)
-        .map((img) => img.src),
-    );
+    const brokenImages = await page.evaluate(() => [...document.querySelectorAll('img')]
+      .filter((img) => !img.complete || img.naturalWidth === 0)
+      .map((img) => img.src));
     expect(brokenImages, `Broken images found: ${brokenImages.join(', ')}`).toHaveLength(0);
   });
 
   test('all 8 stylesheets injected into document', async ({ page }) => {
-    const sheets = await page.evaluate(() =>
-      [...document.styleSheets].map((s) => s.href).filter(Boolean),
+    const sheets = await page.evaluate(
+      () => [...document.styleSheets].map((s) => s.href).filter(Boolean),
     );
     const required = [
       'styles.css', 'hero.css', 'cards.css', 'header.css',
@@ -194,9 +188,7 @@ test.describe('Hero & Cards Section', () => {
   test('all 3 CTA buttons are visible', async ({ page }) => {
     const buttons = page.locator('.cards a.button');
     await expect(buttons).toHaveCount(3);
-    for (const btn of await buttons.all()) {
-      await expect(btn).toBeVisible();
-    }
+    await Promise.all((await buttons.all()).map((btn) => expect(btn).toBeVisible()));
   });
 });
 
@@ -456,8 +448,6 @@ test.describe('Mobile Responsive (375px)', () => {
     const cards = page.locator('.cards ul li');
     await expect(cards).toHaveCount(3);
     // Each card should be visible and stacked
-    for (const card of await cards.all()) {
-      await expect(card).toBeVisible();
-    }
+    await Promise.all((await cards.all()).map((card) => expect(card).toBeVisible()));
   });
 });

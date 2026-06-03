@@ -308,6 +308,9 @@ export default function decorate(block) {
   const tabList = document.createElement('ul');
   tabList.setAttribute('role', 'tablist');
 
+  const panelsContainer = document.createElement('div');
+  panelsContainer.classList.add('contact-info-panels');
+
   REGIONS.forEach((region) => {
     const li = document.createElement('li');
     const btn = document.createElement('button');
@@ -334,10 +337,6 @@ export default function decorate(block) {
   });
 
   tabNav.appendChild(tabList);
-
-  // ── Panels ────────────────────────────────────────────────────────────
-  const panelsContainer = document.createElement('div');
-  panelsContainer.classList.add('contact-info-panels');
 
   REGIONS.forEach((region) => {
     panelsContainer.appendChild(buildPanel(region, region === activeRegion));

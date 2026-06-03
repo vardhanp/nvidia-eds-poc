@@ -275,11 +275,6 @@ header {
   transition: color var(--transition-base);
 }
 
-.cs-country-grid a:hover {
-  color: var(--color-nvidia-green-dark);
-  text-decoration: underline;
-}
-
 /* ── Font Awesome Sharp Light icon rendering ─────────────────────── */
 .fa-sharp.fa-light {
   font-family: 'Font Awesome 6 Sharp', sans-serif;
@@ -427,6 +422,11 @@ header {
 
 .mega-menu-items li a:hover strong {
   color: var(--color-nvidia-green-dark);
+}
+
+.cs-country-grid a:hover {
+  color: var(--color-nvidia-green-dark);
+  text-decoration: underline;
 }
 
 .mega-menu-arrow {
